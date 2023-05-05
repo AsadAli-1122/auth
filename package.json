@@ -41,9 +41,7 @@
     "yup": "^1.1.1"
   },
   "devDependencies": {
-    "@next/eslint-plugin-next": "^13.4.0",
     "@types/node": "^18.16.3",
-    "@types/yup": "^0.32.0",
-    "eslint-config-prettier": "^8.8.0"
+    "@types/yup": "^0.32.0"
   }
 }

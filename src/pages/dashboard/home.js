@@ -1,19 +1,13 @@
 import { useState, useEffect } from 'react';
-// import useRouter from 'next/router';
 import Layout from '../../components/layout/layout';
 
 function UserData() {
   const [userData, setUserData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  // const router = useRouter();
 
   useEffect(() => {
     const token = localStorage.getItem('token');
-    // if (!token) {
-    //   router.push('/login');
-    //   return;
-    // }
 
     // Fetch user data from API
     fetch('/api/data/getuserdata', {

@@ -9,7 +9,7 @@ const Sidebar = () => {
         <Link href='/dashboard' className='flex justify-center items-center'>
                   <Image
                     className="block h-8 w-auto lg:hidden"
-                    src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=500"
+                    src="/images/logo.jpeg"
                     alt="Your Company"
                     height={100}
                     width={100}
@@ -17,7 +17,7 @@ const Sidebar = () => {
                   />
                   <Image
                     className="hidden h-8 w-auto lg:block"
-                    src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=500"
+                    src="/images/logo.jpeg"
                     alt="Your Company"
                     height={100}
                     width={100}

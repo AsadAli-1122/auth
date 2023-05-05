@@ -1,6 +1,6 @@
 import Link from 'next/link'
 import useRouter from 'next/router'
-import React, {  useState } from 'react'
+import React, {  useEffect, useState } from 'react'
 
 const Signup = () => {
     const [username, setUsername] = useState('')
@@ -11,12 +11,12 @@ const Signup = () => {
     const [error, setError] = useState('')
     const router = useRouter()
 
-    // useEffect(() => {
-    //     const token = localStorage.getItem('token')
-    //     if (token) {
-    //         router.push('/dashboard')
-    //     }
-    // }, [])
+    useEffect(() => {
+        const token = localStorage.getItem('token')
+        if (token) {
+            router.push('/dashboard')
+        }
+    }, [])
 
     const handleSubmit = async (event) => {
         event.preventDefault()
