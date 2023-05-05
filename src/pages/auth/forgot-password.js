@@ -55,7 +55,7 @@ function ForgotPassword() {
 
         <p className="mt-8 text-gray-700">
           {" "}
-          Don't have an account?{" "}
+          Don&apos;t have an account?{" "}
           <Link
             href="/auth/signup"
             className="font-medium text-purple-600 hover:underline"

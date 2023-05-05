@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { useEffect, useState } from 'react'
+import {  useState } from 'react'
 import axios from 'axios'
 import { useRouter } from 'next/router';
 
@@ -11,12 +11,12 @@ const Login = () => {
   const [error, setError] = useState('')
   const router = useRouter();
 
-  useEffect(() => {
-    const token = localStorage.getItem('token')
-    if (token) {
-      router.push('/dashboard')
-    }
-  }, [])
+  // useEffect(() => {
+  //   const token = localStorage.getItem('token')
+  //   if (token) {
+  //     router.push('/dashboard')
+  //   }
+  // }, [])
 
   function handleLogin(e) {
     e.preventDefault()
@@ -127,7 +127,7 @@ const Login = () => {
 
         <p className="mt-8 text-gray-700">
           {" "}
-          Don't have an account?{" "}
+          Don&apos;t have an account?{" "}
           <Link
             href="signup"
             className="font-medium text-purple-600 hover:underline"

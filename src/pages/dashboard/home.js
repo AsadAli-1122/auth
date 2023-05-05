@@ -1,51 +1,68 @@
-import React, { useEffect, useState } from 'react';
+import { useState, useEffect } from 'react';
+// import useRouter from 'next/router';
 import Layout from '../../components/layout/layout';
 
-const Home = () => {
-  const [data, setData] = useState('')
-  const [token, setToken] = useState('')
-  
+function UserData() {
+  const [userData, setUserData] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  // const router = useRouter();
+
   useEffect(() => {
     const token = localStorage.getItem('token');
-    setToken(token);
-    // console.log(token)
+    // if (!token) {
+    //   router.push('/login');
+    //   return;
+    // }
+
+    // Fetch user data from API
+    fetch('/api/data/getuserdata', {
+      headers: {
+        'Authorization': `Bearer ${token}`
+      }
+    })
+      .then(res => {
+        if (!res.ok) {
+          throw new Error('Failed to fetch user data');
+        }
+        return res.json();
+      })
+      .then(data => {
+        setUserData(data);
+        setLoading(false);
+      })
+      .catch(error => {
+        setError(error.message);
+        setLoading(false);
+      });
   }, []);
 
-  const handleSubmit = async (event) => {
-    event.preventDefault()
-
-    try {
-      const response = await fetch('/api/data/userdata', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ data, token }),
-      })
-
-      const { message } = await response.json()
-
-      alert(message)
-    } catch (error) {
-      alert(error.message)
-    }
+  if (loading) {
+    return <div>Loading...</div>;
   }
 
+  if (error) {
+    return <div>{error}</div>;
+  }
+
+  if (!userData) {
+    return null;
+  }
 
   return (
-    <div>
+    <>
       <Layout>
-        <h1 className='text-center text-4xl'>Home</h1>
-        {/* {token && <p>Token: {token}</p>} */}
-        <form onSubmit={handleSubmit}>
-      <label>
-        Data:
-        <input type="text" value={data} onChange={(event) => setData(event.target.value)} />
-      </label>
-      
-      <button type="submit">Submit</button>
-    </form>
-      </Layout>
-    </div>
-  );
-};
 
-export default Home;
+        <div>
+          <h1>User Data</h1>
+          <p>username : {userData.username}</p>
+          <p>email : {userData.email}</p>
+          {userData.firstName && <p>First Name: {userData.firstName}</p>}
+          {userData.lastName && <p>Last Name: {userData.lastName}</p>}
+        </div>
+      </Layout>
+    </>
+  );
+}
+
+export default UserData;
