@@ -27,14 +27,19 @@ export default async function handler(req, res) {
     const hashedPassword = await bcrypt.hash(password, 10)
 
     // Insert the registration data into the "Users" collection, including the hashed password
-    const result = await db.collection('Users').insertOne({ username, email, password: hashedPassword, createdAt: new Date() })
-
+    const result = await db.collection('Users').insertOne({
+      username,
+      email,
+      password: hashedPassword,
+      createdAt: new Date(),
+      role: 'client'
+    })
     // Insert a new user details document with null values data
     await db.collection('UserData').insertOne({
       userID: result.insertedId.toString(),
       data: {
         username: username,
-        email: email,
+        email: email
       }
     })
 

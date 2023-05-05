@@ -9,7 +9,7 @@ const Signup = () => {
     const [confirmPassword, setConfirmPassword] = useState('')
     const [isLoading, setIsLoading] = useState(false)
     const [error, setError] = useState('')
-    const router = useRouter()
+    const router = useRouter;
 
     useEffect(() => {
         const token = localStorage.getItem('token')
