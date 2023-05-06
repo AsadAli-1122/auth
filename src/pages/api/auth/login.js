@@ -27,9 +27,9 @@ export default async function handler(req, res) {
     }
 
     // Create a JWT token for the user
-    const token = jwt.sign({ email: user.email, id: user._id }, process.env.JWT_SECRET)
+    const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET)
 
-    res.status(200).json({ message: 'Login successful', token })
+    res.status(200).json({ message: 'Login successful', token , role:user.role })
   } else {
     res.status(405).json({ message: 'Method not allowed' })
   }

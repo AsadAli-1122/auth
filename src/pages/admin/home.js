@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import Layout from '../../components/layout/layoutclient';
+import Layout from '../../components/layout/layoutadmin';
 
 function UserData() {
   const [userData, setUserData] = useState(null);

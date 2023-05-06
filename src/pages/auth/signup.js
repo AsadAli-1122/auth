@@ -1,8 +1,11 @@
+import axios from 'axios';
 import Link from 'next/link'
 import useRouter from 'next/router'
 import React, {  useEffect, useState } from 'react'
 
 const Signup = () => {
+    
+  const [user, setUser] = useState(null);
     const [username, setUsername] = useState('')
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
@@ -12,11 +15,40 @@ const Signup = () => {
     const router = useRouter;
 
     useEffect(() => {
-        const token = localStorage.getItem('token')
-        if (token) {
-            router.push('/dashboard')
+        const token = localStorage.getItem('token');
+        if (!token) {
+          // Redirect user to signup page if not logged in
+          router.push('/auth/signup');
+          return;
         }
-    }, [])
+    
+        axios.get('/api/auth/user', {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        })
+    
+        .then(response => {
+          if (!response.data) throw new Error(response.statusText);
+          setUser(response.data);
+          if(response.data.role === 'admin'){
+              // console.log(response.data.role)
+              router.push('/admin')
+            }else if(response.data.role === 'client'){
+              // console.log(response.data.role)
+              router.push('/client')
+            }
+          })
+          .catch(error => {
+            console.error(error);
+            // Remove token from local storage if unauthorized or user not found
+            localStorage.removeItem('token');
+            router.push('/auth/signup');
+          });
+      }, []);
+    
+      
+      // if (!user) return <p>Loading...</p>;
 
     const handleSubmit = async (event) => {
         event.preventDefault()

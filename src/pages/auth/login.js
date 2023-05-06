@@ -1,22 +1,54 @@
+//auth/login.js
+
 import Link from 'next/link';
-import {  useEffect, useState } from 'react'
 import axios from 'axios'
+import { useEffect, useState } from 'react'
 import { useRouter } from 'next/router';
 
 
 const Login = () => {
 
+  const [user, setUser] = useState(null);
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [error, setError] = useState('')
   const router = useRouter();
 
   useEffect(() => {
-    const token = localStorage.getItem('token')
-    if (token) {
-      router.push('/dashboard')
+    const token = localStorage.getItem('token');
+    if (!token) {
+      // Redirect user to login page if not logged in
+      router.push('/auth/login');
+      return;
     }
-  }, [])
+
+    axios.get('/api/auth/user', {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    })
+
+    .then(response => {
+      if (!response.data) throw new Error(response.statusText);
+      setUser(response.data);
+      if(response.data.role === 'admin'){
+          // console.log(response.data.role)
+          router.push('/admin')
+        }else if(response.data.role === 'client'){
+          // console.log(response.data.role)
+          router.push('/client')
+        }
+      })
+      .catch(error => {
+        console.error(error);
+        // Remove token from local storage if unauthorized or user not found
+        localStorage.removeItem('token');
+        router.push('/auth/login');
+      });
+  }, []);
+
+  
+  // if (!user) return <p>Loading...</p>;
 
   function handleLogin(e) {
     e.preventDefault()
@@ -31,13 +63,39 @@ const Login = () => {
         // Store the token in local storage and redirect to the home page
         console.log(res.data.token)
         localStorage.setItem('token', res.data.token)
-        router.push('/dashboard')
+        if(res.data.role === 'admin'){
+          router.push('/admin')
+        }else if(res.data.role === 'client'){
+          router.push('/client')
+        }
       })
       .catch(error => {
         console.error(error.response.data)
         setError(error.response.data.message)
       })
   }
+
+  // const handleLogin = async (e) => {
+  //   e.preventDefault()
+
+  //   try {
+  //     // Send a POST request to the login API route
+  //     const response = await axios.post('/api/auth/login', { email, password })
+
+  //     // Store the token in local storage and redirect to the home page
+  //     localStorage.setItem('token', response.data.token)
+  //     console.log(response.data.role)
+      
+  //     if (response.data.role === 'admin') {
+  //       router.push('/admin')
+  //     } else if (response.data.role === 'client') {
+  //       router.push('/client')
+  //     }
+  //   } catch (error) {
+  //     console.error(error.response?.data)
+  //     setError(error.response?.data?.message)
+  //   }
+  // }
 
 
 

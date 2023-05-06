@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/router';
-import Layout from '../../components/layout/layoutclient';
+import Layout from '../../components/layout/layoutadmin';
 
 export default function UserDataForm() {
   const [userData, setUserData] = useState({

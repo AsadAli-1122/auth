@@ -44,7 +44,7 @@ export default async function handler(req, res) {
     })
 
     // Create a JWT token with the user's email and ID
-    const token = jwt.sign({ email, id: result.insertedId }, process.env.JWT_SECRET)
+    const token = jwt.sign({ id: result.insertedId }, process.env.JWT_SECRET)
 
     res.status(200).json({ message: 'Registration successful', token })
   } else {

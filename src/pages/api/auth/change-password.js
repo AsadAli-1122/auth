@@ -1,13 +1,13 @@
-import { MongoClient } from 'mongodb'
+import { MongoClient, ObjectId } from 'mongodb'
 import bcrypt from 'bcrypt'
 
 export default async function handler(req, res) {
   if (req.method === 'POST') {
-    const { email, currentPassword, newPassword, newConfirmPassword } = req.body
+    const { id, currentPassword, newPassword, newConfirmPassword } = req.body
 
-    // Check if the email, current password, new password, and new confirm password fields are present
-    if (!email) {
-      res.status(400).json({ message: 'Email field is required' })
+    // Check if the id, current password, new password, and new confirm password fields are present
+    if (!id) {
+      res.status(400).json({ message: 'Id field is required' })
       return
     }
 
@@ -36,8 +36,8 @@ export default async function handler(req, res) {
     const client = await MongoClient.connect(process.env.MONGODB_URI)
     const db = client.db(process.env.MONGODB_DB)
 
-    // Check if the email and current password match a user in the database
-    const user = await db.collection('Users').findOne({ email })
+    // Check if the id and current password match a user in the database
+    const user = await db.collection('Users').findOne({ _id: ObjectId(id) })
     if (!user) {
       res.status(400).json({ message: 'Invalid Current Password' })
       return
@@ -53,7 +53,7 @@ export default async function handler(req, res) {
     const hashedPassword = await bcrypt.hash(newPassword, 10)
 
     // Update the user's password in the database
-    await db.collection('Users').updateOne({ email }, { $set: { password: hashedPassword } })
+    await db.collection('Users').updateOne({ _id: ObjectId(id) }, { $set: { password: hashedPassword } })
 
     res.status(200).json({ message: 'Password changed successfully' })
   } else {

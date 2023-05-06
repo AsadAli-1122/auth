@@ -15,7 +15,7 @@ function handleSignout() {
   }
   
 
-export default function Example() {
+export default function Navbar(props) {
   return (
     <Disclosure as="nav" className="bg-gray-800">
       {({ open }) => (
@@ -93,7 +93,7 @@ export default function Example() {
                       </Menu.Item>
                       <Menu.Item>
                           <Link
-                            href="dashboard/setting"
+                            href={`${props.role}/setting`}
                             className="block px-4 py-2 text-sm text-gray-700"
                           >
                             Settings

@@ -18,7 +18,7 @@ export default async function handler(req, res) {
     }
 
     // Generate a password reset token
-    const resetToken = jwt.sign({ email: user.email, id: user._id }, process.env.JWT_SECRET, { expiresIn: '1h' })
+    const resetToken = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: '1h' })
 
     // Update the user's password reset token in the database
     await db.collection('Users').updateOne({ _id: user._id }, { $set: { resetToken } })

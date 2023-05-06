@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
-import LayoutClient from '../../components/layout/layoutclient';
 import { useRouter } from 'next/router';
+import Layout from '../../components/layout/layoutadmin';
 
 async function getUserData() {
   try {
@@ -70,7 +70,7 @@ export default function UserData() {
 
   return (
     <>
-      <LayoutClient>
+      <Layout>
         <form onSubmit={handleSubmit}>
           <label className='hidden'>
             User Name :
@@ -90,7 +90,7 @@ export default function UserData() {
           </label>
           <button type="submit">Save</button>
         </form>
-      </LayoutClient>
+      </Layout>
     </>
   );
 }
